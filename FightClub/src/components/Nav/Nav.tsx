@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "../scss/navMobile.scss";
+import "../../scss/navMobile.scss";
 const Nav = () => {
     const [burger_class, setBurgerClass] = useState("burger-bar unclicked");
     const [menu_class, setMenuClass] = useState("menu hidden");
@@ -25,18 +25,24 @@ const Nav = () => {
                 </div>
             </nav>
             <div className={menu_class}>
-                <ul className="flex flex-col items-center mt-72 gap-10">
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/coaches">Coaches</Link>
-                    </li>
-                    <li>Pricing</li>
-                    <li>Photos</li>
-                    <li>Details</li>
-                    <li>Contact</li>
-                </ul>
+                <div className="navWrap">
+                    <ul className="flex flex-col gap-10 uppercase font-bold text-2xl">
+                        <li>
+                            <Link to="/" onClick={updateMenu}>
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/coaches" onClick={updateMenu}>
+                                Coaches
+                            </Link>
+                        </li>
+                        <li>Pricing</li>
+                        <li>Photos</li>
+                        <li>Details</li>
+                        <li>Contact</li>
+                    </ul>
+                </div>
             </div>
         </>
     );
