@@ -3,7 +3,6 @@ import { useState } from "react";
 import { addTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
 const AddTask = () => {
-    const id = useRef<number>();
     const dispatch = useAppDispatch();
 
     const [topic, setTopic] = useState<string>("");
