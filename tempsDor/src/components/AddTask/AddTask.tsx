@@ -1,16 +1,26 @@
-import { FormEvent } from "react";
+import { FormEvent, useRef } from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { addTask } from "../../store/features/tasksSlice";
-import { RootState } from "../../store/store";
+import { useAppDispatch } from "../../store/store";
 const AddTask = () => {
+    const id = useRef<number>();
+    const dispatch = useAppDispatch();
+
+    const [topic, setTopic] = useState<string>("");
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        dispatch(addTask({ title: topic }));
     };
     return (
         <div>
-            <form action="submit" className="flex flex-col gap-2 items-center">
+            <form
+                onSubmit={handleSubmit}
+                action="submit"
+                className="flex flex-col gap-2 items-center"
+            >
                 <input
+                    onChange={(e) => setTopic(e.target.value)}
                     type="text"
                     placeholder="Add new task topic"
                     className="border-2 rounded-xl p-3 w-96 text-center"
