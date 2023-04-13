@@ -1,6 +1,6 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent } from "react";
 import { useState } from "react";
-import { addTask } from "../../store/features/tasksSlice";
+import { newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
 const AddTask = () => {
     const dispatch = useAppDispatch();
@@ -9,7 +9,7 @@ const AddTask = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(addTask({ title: topic }));
+        dispatch(newTask({ title: topic }));
     };
     return (
         <div>

@@ -1,19 +1,30 @@
 import { useSelector } from "react-redux";
+import { removeTask } from "../../store/features/tasksSlice";
+import { useAppDispatch } from "../../store/store";
 
 const TaskList = () => {
-    const list = useSelector((state: any) => state.addTask.list);
-    console.log(list);
+    const dispatch = useAppDispatch();
+    const list = useSelector((state: any) => state.newTask.list);
+    const handleSubmit = (id: number): void => {
+        dispatch(removeTask(id));
+    };
+
     return (
         <div>
             <h2 className="text-3xl font-bold text-blue-600">Your tasks:</h2>
             <ul>
                 {list?.map((task: any, taskIndex: number) => (
-                    <li
-                        className="border-2 border-grey-400 text-start p-1 rounded-lg"
-                        key={task.id}
-                    >
-                        {taskIndex + 1}. {task.title}
-                    </li>
+                    <div key={task.id} className="flex gap-2">
+                        <li className="border-2 border-grey-400 text-start p-1 rounded-lg">
+                            {taskIndex + 1}. {task.title}
+                        </li>
+                        <button
+                            onClick={() => handleSubmit(task.id)}
+                            className="border-2 border-red-600 p-1 rounded"
+                        >
+                            X
+                        </button>
+                    </div>
                 ))}
             </ul>
         </div>
