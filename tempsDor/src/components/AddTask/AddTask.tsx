@@ -2,9 +2,9 @@ import { FormEvent } from "react";
 import { useState } from "react";
 import { newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
+
 const AddTask = () => {
     const dispatch = useAppDispatch();
-
     const [topic, setTopic] = useState<string>("");
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
