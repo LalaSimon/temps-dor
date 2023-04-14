@@ -15,10 +15,14 @@ const TaskList = () => {
             <h2 className="text-3xl font-bold text-blue-600">Your tasks:</h2>
             <ul>
                 {list?.map((task: Todo, taskIndex: number) => (
-                    <div key={task.id} className="flex gap-2">
-                        <li className="border-2 border-grey-400 text-start p-1 rounded-lg">
+                    <div
+                        key={task.id}
+                        className="flex gap-2 border-2 border-grey-400 text-start p-1 rounded-lg"
+                    >
+                        <li className="">
                             {taskIndex + 1}. {task.title}
                         </li>
+                        <span>{task.content}</span>
                         <button
                             onClick={() => handleSubmit(task.id)}
                             className="border-2 border-red-600 p-1 rounded"

@@ -6,6 +6,7 @@ const store = configureStore({
     reducer: {
         newTask: tasksSlice,
         removeTask: tasksSlice,
+        deleteList: tasksSlice,
     },
 });
 
