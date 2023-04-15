@@ -29,6 +29,8 @@ const AddTask = () => {
                 className="flex flex-col gap-2 items-center"
             >
                 <input
+                    maxLength={25}
+                    required
                     onChange={(e) => setTopic(e.target.value)}
                     value={topic}
                     type="text"
@@ -39,7 +41,7 @@ const AddTask = () => {
                     onChange={(e) => setTextAreaContent(e.target.value)}
                     value={textAreaContent}
                     placeholder="Type your task description"
-                    maxLength={250}
+                    maxLength={35}
                     className="border-2 rounded-xl p-3 w-96 text-center resize-none"
                 ></textarea>
                 <div className="flex gap-2">
