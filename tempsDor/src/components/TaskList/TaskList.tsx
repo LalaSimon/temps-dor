@@ -45,8 +45,11 @@ const TaskList = () => {
                     ))}
                 </ul>
             )}
-            {list.length > 4 ? (
-                <i className="fa-solid fa-arrow-down-short-wide fa-2xl absolute bottom-4 right-0 "></i>
+            {list.length >= 5 ? (
+                <>
+                    <i className="fa-solid fa-arrow-up-wide-short fa-2xl arrowUp text-gray-400"></i>
+                    <i className="fa-solid fa-arrow-down-short-wide fa-2xl arrowDown text-gray-400"></i>
+                </>
             ) : null}
         </div>
     );
