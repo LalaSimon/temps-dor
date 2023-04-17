@@ -8,17 +8,14 @@ body {
     box-sizing: border-box;
     max-height: 100vh;
 }
+body::-webkit-scrollbar {
+    display: none;
+}
 .taskHidyScroll::-webkit-scrollbar {
     display: none;
 }
 
 .arrowDown {
-    position: absolute;
-    bottom: 40%;
-    right: 0;
 }
 .arrowUp {
-    position: absolute;
-    top: 50%;
-    right: 0;
 }

@@ -12,8 +12,8 @@ const TaskList = () => {
     };
 
     return (
-        <div className=" flex flex-col px-7 relative mb-2">
-            <h2 className="text-3xl font-bold text-blue-600 text-center mb-2 ">
+        <div className=" flex flex-col px-7 mb-2 border-2 border-black">
+            <h2 className="text-3xl font-bold text-blue-600 text-center mb-2">
                 Your tasks:
             </h2>
             {list.length <= 0 ? (
@@ -38,7 +38,7 @@ const TaskList = () => {
                                 </button>
                             </div>
 
-                            <p className="text-xs bottom-0 italic text-gray-400">
+                            <p className="text-xs italic text-gray-400">
                                 {task.content}
                             </p>
                         </div>
@@ -47,8 +47,8 @@ const TaskList = () => {
             )}
             {list.length >= 5 ? (
                 <>
-                    <i className="fa-solid fa-arrow-up-wide-short fa-2xl arrowUp text-gray-400"></i>
-                    <i className="fa-solid fa-arrow-down-short-wide fa-2xl arrowDown text-gray-400"></i>
+                    <i className="fa-solid fa-arrow-up-wide-short fa-2xl text-gray-400 block"></i>
+                    <i className="fa-solid fa-arrow-down-short-wide fa-2xl text-gray-400 block "></i>
                 </>
             ) : null}
         </div>
