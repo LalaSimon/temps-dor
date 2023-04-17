@@ -3,7 +3,6 @@ import { useState } from "react";
 import { removeTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
-
 const TaskList = () => {
     const dispatch = useAppDispatch();
     const list = useSelector((state: any) => state.newTask.list);
@@ -13,14 +12,14 @@ const TaskList = () => {
     };
 
     return (
-        <div>
-            <h2 className="text-3xl font-bold text-blue-600 text-center mb-2">
+        <div className=" flex flex-col px-7 relative mb-2">
+            <h2 className="text-3xl font-bold text-blue-600 text-center mb-2 ">
                 Your tasks:
             </h2>
             {list.length <= 0 ? (
                 <p className="mb-6"> You dont have any tasks : (</p>
             ) : (
-                <ul className="flex flex-col gap-3 overflow-y-visible taskHidyScroll overflow-x-auto h-96">
+                <ul className="flex flex-col gap-3 overflow-y-visible taskHidyScroll overflow-x-auto h-96 ">
                     {list?.map((task: Todo, taskIndex: number) => (
                         <div
                             key={task.id}
@@ -46,6 +45,12 @@ const TaskList = () => {
                     ))}
                 </ul>
             )}
+            {list.length >= 5 ? (
+                <>
+                    <i className="fa-solid fa-arrow-up-wide-short fa-2xl arrowUp text-gray-400"></i>
+                    <i className="fa-solid fa-arrow-down-short-wide fa-2xl arrowDown text-gray-400"></i>
+                </>
+            ) : null}
         </div>
     );
 };
