@@ -8,18 +8,29 @@ const AddTask = () => {
     const dispatch = useAppDispatch();
     const list = useSelector((state: any) => state.newTask.list);
     const [topic, setTopic] = useState<string>("");
-    const [textAreaContent, setTextAreaContent] = useState("");
+    const [deadlineTime, setDeadlineTime] = useState("");
+    const [priority, setPriority] = useState("");
+    const [resetSelectKey, setResetSelectKey] = useState(0);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(newTask({ title: topic, content: textAreaContent }));
+        dispatch(
+            newTask({
+                title: topic,
+                deadline: deadlineTime,
+                priority: priority,
+            })
+        );
         setTopic("");
-        setTextAreaContent("");
+        setDeadlineTime("");
+        setPriority("reset");
+        setResetSelectKey(resetSelectKey + 1);
     };
     const handleReset = (e: FormEvent) => {
         dispatch(deleteList());
         setTopic("");
-        setTextAreaContent("");
+        setDeadlineTime("");
+        setPriority("");
     };
     return (
         <div>
@@ -37,13 +48,27 @@ const AddTask = () => {
                     placeholder="Add new task topic"
                     className="border-2 rounded-xl p-3 w-96 text-center"
                 ></input>
-                <textarea
-                    onChange={(e) => setTextAreaContent(e.target.value)}
-                    value={textAreaContent}
-                    placeholder="Type your task description"
-                    maxLength={35}
+                <input
+                    onChange={(e) => setDeadlineTime(e.target.value)}
+                    value={deadlineTime}
+                    placeholder="Type your task deadline time"
+                    maxLength={25}
                     className="border-2 rounded-xl p-3 w-96 text-center resize-none"
-                ></textarea>
+                ></input>
+                <select
+                    onChange={(e) => setPriority(e.target.value)}
+                    className="border-2 rounded-xl p-3 w-96 text-center"
+                    required
+                    defaultValue=""
+                    key={resetSelectKey}
+                >
+                    <option value="" disabled hidden>
+                        Task priority
+                    </option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
                 <div className="flex gap-2">
                     <button
                         type="submit"
