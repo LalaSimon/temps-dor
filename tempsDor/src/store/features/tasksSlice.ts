@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface MoveTaskPayload {
+    fromIndex: number;
+    toIndex: number;
+}
+
 export interface Todo {
     id: number;
     title: string;
@@ -39,11 +44,19 @@ const taskListSlice = createSlice({
         deleteList: (state) => {
             state.list = [];
         },
+        moveTask: (state, action: PayloadAction<MoveTaskPayload>) => {
+            const { fromIndex, toIndex } = action.payload;
+            const items = Array.from(state.list);
+            const [reorderedItem] = items.splice(fromIndex, 1);
+            items.splice(toIndex, 0, reorderedItem);
+            return { ...state, list: items };
+        },
     },
 });
 
 export const { newTask } = taskListSlice.actions;
 export const { removeTask } = taskListSlice.actions;
 export const { deleteList } = taskListSlice.actions;
+export const { moveTask } = taskListSlice.actions;
 
 export default taskListSlice.reducer;
