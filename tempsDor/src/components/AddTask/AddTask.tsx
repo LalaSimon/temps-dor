@@ -45,13 +45,13 @@ const AddTask = () => {
                     onChange={(e) => setTopic(e.target.value)}
                     value={topic}
                     type="text"
-                    placeholder="Add new task topic"
+                    placeholder="Add new task"
                     className="border-2 rounded-xl p-3 w-96 text-center"
                 ></input>
                 <input
                     onChange={(e) => setDeadlineTime(e.target.value)}
                     value={deadlineTime}
-                    placeholder="Type your task deadline time"
+                    placeholder="Type your task deadline"
                     maxLength={25}
                     className="border-2 rounded-xl p-3 w-96 text-center resize-none"
                 ></input>
