@@ -12,7 +12,7 @@ const TaskList = () => {
     };
 
     return (
-        <div className=" flex flex-col px-7 mb-2 border-2 border-black">
+        <div className=" flex flex-col px-7 mb-2 relative">
             <h2 className="text-3xl font-bold text-blue-600 text-center mb-2">
                 Your tasks:
             </h2>
@@ -47,8 +47,8 @@ const TaskList = () => {
             )}
             {list.length >= 5 ? (
                 <>
-                    <i className="fa-solid fa-arrow-up-wide-short fa-2xl text-gray-400 block"></i>
-                    <i className="fa-solid fa-arrow-down-short-wide fa-2xl text-gray-400 block "></i>
+                    <i className="fa-solid fa-arrow-up-wide-short fa-2xl text-gray-400 block absolute"></i>
+                    <i className="fa-solid fa-arrow-down-short-wide fa-2xl text-gray-400 block absolute "></i>
                 </>
             ) : null}
         </div>
