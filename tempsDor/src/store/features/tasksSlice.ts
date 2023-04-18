@@ -8,7 +8,8 @@ interface MoveTaskPayload {
 export interface Todo {
     id: number;
     title: string;
-    content: string;
+    deadline: string;
+    priority: string;
     completed: boolean;
 }
 export interface TaskListState {
@@ -27,13 +28,15 @@ const taskListSlice = createSlice({
             state,
             action: PayloadAction<{
                 title: string;
-                content: string;
+                deadline: string;
+                priority: string;
             }>
         ) => {
             state.list.push({
                 id: new Date().getTime(),
                 title: action.payload.title,
-                content: action.payload.content,
+                deadline: action.payload.deadline,
+                priority: action.payload.priority,
                 completed: false,
             });
         },

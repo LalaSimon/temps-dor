@@ -58,7 +58,7 @@ const TaskList = () => {
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                className="flex flex-col gap-2 w-96 p-3"
+                                                className="flex flex-col gap-1 w-96 p-3"
                                             >
                                                 <div className="flex items-center w-full justify-between">
                                                     <li className="uppercase font-bold">
@@ -72,14 +72,48 @@ const TaskList = () => {
                                                                 task.id
                                                             )
                                                         }
-                                                        className="border-2 border-red-600 p-1 rounded"
+                                                        className="border-2 border-red-600 p-1 rounded self-center"
                                                     >
                                                         X
                                                     </button>
                                                 </div>
 
                                                 <p className="text-xs italic text-gray-400">
-                                                    {task.content}
+                                                    <strong>Deadline: </strong>
+                                                    {task.deadline}
+                                                </p>
+                                                <p className="text-xs text-gray-400">
+                                                    <strong>Priority: </strong>
+                                                    {(() => {
+                                                        switch (task.priority) {
+                                                            case "High":
+                                                                return (
+                                                                    <span className="text-red-600 font-bold">
+                                                                        {
+                                                                            task.priority
+                                                                        }
+                                                                    </span>
+                                                                );
+                                                            case "Medium":
+                                                                return (
+                                                                    <span className="text-yellow-500 font-bold">
+                                                                        {
+                                                                            task.priority
+                                                                        }
+                                                                    </span>
+                                                                );
+                                                            case "Low":
+                                                                return (
+                                                                    <span className="text-green-600 font-bold">
+                                                                        {
+                                                                            task.priority
+                                                                        }
+                                                                    </span>
+                                                                );
+                                                            default:
+                                                                return null;
+                                                        }
+                                                    })()}
                                                 </p>
                                             </div>
                                         )}
