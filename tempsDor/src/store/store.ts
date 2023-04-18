@@ -5,8 +5,6 @@ import tasksSlice from "./features/tasksSlice";
 const store = configureStore({
     reducer: {
         newTask: tasksSlice,
-        removeTask: tasksSlice,
-        deleteList: tasksSlice,
     },
 });
 

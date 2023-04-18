@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { removeTask } from "../../store/features/tasksSlice";
+import { moveTask, removeTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
 import {
@@ -22,10 +21,18 @@ const TaskList = () => {
         if (!result.destination) {
             return;
         }
+        dispatch(
+            moveTask({
+                fromIndex: result.source.index,
+                toIndex: result.destination.index,
+            })
+        );
     };
 
     return (
-        <DragDropContext onDragEnd={handleDragEnd}>
+        <DragDropContext
+            onDragEnd={(result: DropResult) => handleDragEnd(result)}
+        >
             <div className=" flex flex-col px-7 mb-2 relative">
                 <h2 className="text-3xl font-bold text-blue-600 text-center mb-2">
                     Your tasks:
