@@ -4,7 +4,7 @@ import { deleteList, newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
 import { useSelector } from "react-redux";
 
-const AddTask = () => {
+export const AddTask = () => {
     const dispatch = useAppDispatch();
     const list = useSelector((state: any) => state.newTask.list);
     const [topic, setTopic] = useState<string>("");
@@ -23,14 +23,15 @@ const AddTask = () => {
         );
         setTopic("");
         setDeadlineTime("");
-        setPriority("reset");
+        setPriority("");
         setResetSelectKey(resetSelectKey + 1);
     };
     const handleReset = (e: FormEvent) => {
-        dispatch(deleteList());
         setTopic("");
         setDeadlineTime("");
         setPriority("");
+        setResetSelectKey(resetSelectKey + 1);
+        dispatch(deleteList());
     };
     return (
         <div>
@@ -40,6 +41,7 @@ const AddTask = () => {
                 className="flex flex-col gap-2 items-center"
             >
                 <input
+                    data-testid="test"
                     maxLength={25}
                     required
                     onChange={(e) => setTopic(e.target.value)}
@@ -56,6 +58,7 @@ const AddTask = () => {
                     className="border-2 rounded-xl p-3 w-96 text-center resize-none"
                 ></input>
                 <select
+                    data-test-id="selectTestId"
                     onChange={(e) => setPriority(e.target.value)}
                     className="border-2 rounded-xl p-3 w-96 text-center"
                     required
@@ -88,5 +91,3 @@ const AddTask = () => {
         </div>
     );
 };
-
-export { AddTask };
