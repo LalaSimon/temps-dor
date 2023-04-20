@@ -36,7 +36,6 @@ describe("AddTask component", () => {
         fireEvent.change(input, { target: { value: "Test task" } });
         fireEvent.change(deadlineInput, { target: { value: "2023-05-01" } });
         fireEvent.change(prioritySelect, { target: { value: "High" } });
-
         fireEvent.submit(screen.getByRole("button", { name: "Add task" }));
 
         expect(store.getState().newTask.list.length).toBe(1);
@@ -65,8 +64,7 @@ describe("AddTask component", () => {
         fireEvent.change(input, { target: { value: "Test task" } });
         fireEvent.change(deadlineInput, { target: { value: "2023-05-01" } });
         fireEvent.change(prioritySelect, { target: { value: "High" } });
-
-        fireEvent.click(screen.getByRole("button", { name: "Clear list" }));
+        fireEvent.click(screen.getByTestId("deleteBtn"));
 
         expect(store.getState().newTask.list.length).toBe(0);
         expect(input.value).toBe("");
