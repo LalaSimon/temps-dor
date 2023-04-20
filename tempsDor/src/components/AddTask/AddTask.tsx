@@ -12,6 +12,12 @@ export const AddTask = () => {
     const [priority, setPriority] = useState("");
     const [resetSelectKey, setResetSelectKey] = useState(0);
 
+    const resetForm = (): void => {
+        setTopic("");
+        setDeadlineTime("");
+        setPriority("");
+        setResetSelectKey(resetSelectKey + 1);
+    };
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(
@@ -21,18 +27,14 @@ export const AddTask = () => {
                 priority: priority,
             })
         );
-        setTopic("");
-        setDeadlineTime("");
-        setPriority("");
-        setResetSelectKey(resetSelectKey + 1);
+        resetForm();
     };
-    const handleReset = (e: FormEvent) => {
-        setTopic("");
-        setDeadlineTime("");
-        setPriority("");
-        setResetSelectKey(resetSelectKey + 1);
+
+    const handleReset = () => {
+        resetForm();
         dispatch(deleteList());
     };
+
     return (
         <div>
             <form
@@ -41,7 +43,7 @@ export const AddTask = () => {
                 className="flex flex-col gap-2 items-center"
             >
                 <input
-                    data-testid="test"
+                    data-test-id="test"
                     maxLength={25}
                     required
                     onChange={(e) => setTopic(e.target.value)}
@@ -65,7 +67,7 @@ export const AddTask = () => {
                     defaultValue=""
                     key={resetSelectKey}
                 >
-                    <option value="" disabled hidden>
+                    <option value="" hidden defaultValue="">
                         Task priority
                     </option>
                     <option value="High">High</option>
@@ -80,7 +82,8 @@ export const AddTask = () => {
                         Add task
                     </button>
                     <button
-                        onClick={(e) => handleReset(e)}
+                        data-test-id="deleteBtn"
+                        onClick={() => handleReset()}
                         type="button"
                         className="border-2 rounded-xl w-36 p-2 text-center"
                     >
