@@ -13,10 +13,10 @@ export const AddTask = () => {
     const [resetSelectKey, setResetSelectKey] = useState(0);
 
     const resetForm = (): void => {
+        setResetSelectKey(resetSelectKey);
         setTopic("");
         setDeadlineTime("");
         setPriority("");
-        setResetSelectKey(resetSelectKey + 1);
     };
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

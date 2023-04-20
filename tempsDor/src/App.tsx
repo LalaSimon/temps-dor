@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Coaches } from "./pages/Coaches";
+import { Account } from "./pages/Account";
 import { Nav } from "./components/Nav";
 const App = () => {
     return (
@@ -8,7 +8,7 @@ const App = () => {
             <Nav></Nav>
             <Routes>
                 <Route path="/" element={<Home />}></Route>
-                <Route path="/coaches" element={<Coaches />}></Route>
+                <Route path="/account" element={<Account />}></Route>
             </Routes>
         </>
     );
