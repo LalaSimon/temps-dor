@@ -36,8 +36,8 @@ const Nav = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/coaches" onClick={updateMenu}>
-                                Coaches
+                            <Link to="/account" onClick={updateMenu}>
+                                Account
                             </Link>
                         </li>
                         <li>Pricing</li>
