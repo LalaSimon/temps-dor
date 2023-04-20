@@ -6,17 +6,16 @@ import { useSelector } from "react-redux";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();
+    const DEFAULT_VALUE = "";
     const list = useSelector((state: any) => state.newTask.list);
     const [topic, setTopic] = useState<string>("");
     const [deadlineTime, setDeadlineTime] = useState("");
     const [priority, setPriority] = useState("");
-    const [resetSelectKey, setResetSelectKey] = useState(0);
 
     const resetForm = (): void => {
-        setResetSelectKey(resetSelectKey);
-        setTopic("");
-        setDeadlineTime("");
-        setPriority("");
+        setTopic(DEFAULT_VALUE);
+        setDeadlineTime(DEFAULT_VALUE);
+        setPriority(DEFAULT_VALUE);
     };
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -64,8 +63,7 @@ export const AddTask = () => {
                     onChange={(e) => setPriority(e.target.value)}
                     className="border-2 rounded-xl p-3 w-96 text-center"
                     required
-                    defaultValue=""
-                    key={resetSelectKey}
+                    value={priority}
                 >
                     <option value="" hidden defaultValue="">
                         Task priority
