@@ -2,7 +2,13 @@ import { FormEvent } from "react";
 import { useState } from "react";
 import { deleteList, newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
-import { getDatabase, ref, set, push } from "firebase/database";
+import {
+    getDatabase,
+    ref,
+    set,
+    push,
+    ThenableReference,
+} from "firebase/database";
 import { auth } from "../../firebase";
 
 export const AddTask = () => {
@@ -17,14 +23,23 @@ export const AddTask = () => {
         setDeadlineTime(DEFAULT_VALUE);
         setPriority(DEFAULT_VALUE);
     };
-    const writeUserData = (id: string | undefined, tasks: string) => {
+    const writeUserData = (id: string | undefined, content: string[]) => {
         const db = getDatabase();
-        const postTaskList = ref(db, `tasks/${id}`);
-        const newPostRef = push(postTaskList);
+        const postListRef = ref(db, "posts");
+        const newPostRef: ThenableReference = push(postListRef);
         set(newPostRef, {
-            tasks,
+            content: content,
+            userId: id,
+        });
+
+        const userTasksRef = ref(db, `users/${id}`);
+        const newUserTaskRef: ThenableReference = push(userTasksRef);
+        set(newUserTaskRef, {
+            content: content,
+            postId: newPostRef.key,
         });
     };
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(
@@ -34,7 +49,7 @@ export const AddTask = () => {
                 priority: priority,
             })
         );
-        writeUserData(auth.currentUser?.uid, "sth");
+        writeUserData(auth.currentUser?.uid, [topic, deadlineTime, priority]);
 
         resetForm();
     };
