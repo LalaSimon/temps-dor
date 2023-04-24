@@ -2,12 +2,12 @@ import { FormEvent } from "react";
 import { useState } from "react";
 import { deleteList, newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
-import { useSelector } from "react-redux";
+import { getDatabase, ref, set } from "firebase/database";
+import { auth } from "../../firebase";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();
     const DEFAULT_VALUE = "";
-    const list = useSelector((state: any) => state.newTask.list);
     const [topic, setTopic] = useState<string>("");
     const [deadlineTime, setDeadlineTime] = useState("");
     const [priority, setPriority] = useState("");
@@ -16,6 +16,12 @@ export const AddTask = () => {
         setTopic(DEFAULT_VALUE);
         setDeadlineTime(DEFAULT_VALUE);
         setPriority(DEFAULT_VALUE);
+    };
+    const writeUserData = (id: string | undefined, content: string[]) => {
+        const db = getDatabase();
+        set(ref(db, "users/" + id), {
+            content,
+        });
     };
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -26,6 +32,8 @@ export const AddTask = () => {
                 priority: priority,
             })
         );
+        writeUserData(auth.currentUser?.uid, ["test"]);
+
         resetForm();
     };
 
