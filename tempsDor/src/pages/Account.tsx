@@ -3,7 +3,7 @@ import { SignUp } from "../components/SignUp/SignUp";
 
 const Account = () => {
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center gap-10">
+        <div className="min-h-screen flex flex-col justify-center items-center gap-10 pt-6">
             <SignIn></SignIn>
             <SignUp></SignUp>
         </div>

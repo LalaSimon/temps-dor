@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../scss/navMobile.scss";
+
 const Nav = () => {
     const [burger_class, setBurgerClass] = useState("burger-bar unclicked");
     const [menu_class, setMenuClass] = useState("menu hidden");

@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,9 +16,12 @@ const firebaseConfig = {
     messagingSenderId: "80217530401",
     appId: "1:80217530401:web:6d759724a1752f31510360",
     measurementId: "G-VSNB8WK2EV",
+    databaseURL:
+        "https://temps-d-or-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const analytics = getAnalytics(app);
+export const database = getDatabase(app);
