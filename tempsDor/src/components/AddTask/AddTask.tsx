@@ -2,7 +2,7 @@ import { FormEvent } from "react";
 import { useState } from "react";
 import { deleteList, newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, push } from "firebase/database";
 import { auth } from "../../firebase";
 
 export const AddTask = () => {
@@ -17,10 +17,12 @@ export const AddTask = () => {
         setDeadlineTime(DEFAULT_VALUE);
         setPriority(DEFAULT_VALUE);
     };
-    const writeUserData = (id: string | undefined, content: string[]) => {
+    const writeUserData = (id: string | undefined, tasks: string) => {
         const db = getDatabase();
-        set(ref(db, "users/" + id), {
-            content,
+        const postTaskList = ref(db, `tasks/${id}`);
+        const newPostRef = push(postTaskList);
+        set(newPostRef, {
+            tasks,
         });
     };
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -32,7 +34,7 @@ export const AddTask = () => {
                 priority: priority,
             })
         );
-        writeUserData(auth.currentUser?.uid, ["test"]);
+        writeUserData(auth.currentUser?.uid, "sth");
 
         resetForm();
     };
