@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getDatabase, ref, set, get } from "firebase/database";
+import { auth, app } from "../../firebase";
+import { getFirestore } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 interface MoveTaskPayload {
     fromIndex: number;
@@ -8,11 +10,14 @@ interface MoveTaskPayload {
 
 export interface Todo {
     id: number;
-    title: string;
+    topic: string;
     deadline: string;
     priority: string;
     completed: boolean;
 }
+const db = getFirestore(app);
+const querySnapshot = await getDocs(collection(db, "tasks"));
+
 export interface TaskListState {
     list: Todo[];
 }
@@ -28,14 +33,14 @@ const taskListSlice = createSlice({
         newTask: (
             state,
             action: PayloadAction<{
-                title: string;
+                topic: string;
                 deadline: string;
                 priority: string;
             }>
         ) => {
             state.list.push({
                 id: new Date().getTime(),
-                title: action.payload.title,
+                topic: action.payload.topic,
                 deadline: action.payload.deadline,
                 priority: action.payload.priority,
                 completed: false,

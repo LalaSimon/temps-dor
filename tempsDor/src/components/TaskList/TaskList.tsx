@@ -63,7 +63,7 @@ const TaskList = () => {
                                                 <div className="flex items-center w-full justify-between">
                                                     <li className="uppercase font-bold">
                                                         {taskIndex + 1}.{" "}
-                                                        {task.title}
+                                                        {task.topic}
                                                     </li>
 
                                                     <button
