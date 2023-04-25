@@ -2,14 +2,9 @@ import { FormEvent } from "react";
 import { useState } from "react";
 import { deleteList, newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
-import {
-    getDatabase,
-    ref,
-    set,
-    push,
-    ThenableReference,
-} from "firebase/database";
-import { auth } from "../../firebase";
+import { auth, app } from "../../firebase";
+import { getFirestore } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();
@@ -23,40 +18,46 @@ export const AddTask = () => {
         setDeadlineTime(DEFAULT_VALUE);
         setPriority(DEFAULT_VALUE);
     };
-    const writeUserData = (id: string | undefined, content: string[]) => {
-        const db = getDatabase();
-        const postListRef = ref(db, "posts");
-        const newPostRef: ThenableReference = push(postListRef);
-        set(newPostRef, {
-            content: content,
-            userId: id,
-        });
 
-        const userTasksRef = ref(db, `users/${id}`);
-        const newUserTaskRef: ThenableReference = push(userTasksRef);
-        set(newUserTaskRef, {
-            content: content,
-            postId: newPostRef.key,
-        });
-    };
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const db = getFirestore(app);
+
         dispatch(
             newTask({
-                title: topic,
+                topic: topic,
                 deadline: deadlineTime,
                 priority: priority,
             })
         );
-        writeUserData(auth.currentUser?.uid, [topic, deadlineTime, priority]);
+        try {
+            const docRef = await addDoc(collection(db, "tasks"), {
+                topic: topic,
+                deadline: deadlineTime,
+                priority: priority,
+            });
 
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
         resetForm();
     };
 
     const handleReset = () => {
         resetForm();
         dispatch(deleteList());
+    };
+
+    const renderClick = async () => {
+        const db = getFirestore(app);
+        const querySnapshot = await getDocs(collection(db, "tasks"));
+        console.log(querySnapshot.docs[0].data().topic);
+        querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${JSON.stringify(doc.data().topic)}`);
+            console.log(`${doc.id} => ${JSON.stringify(doc.data().deadline)}`);
+            console.log(`${doc.id} => ${JSON.stringify(doc.data().priority)}`);
+        });
     };
 
     return (
@@ -99,6 +100,9 @@ export const AddTask = () => {
                 </select>
                 <div className="flex gap-2">
                     <button
+                        onClick={() => {
+                            renderClick();
+                        }}
                         type="submit"
                         className="border-2 rounded-xl w-36 p-2 text-center"
                     >
