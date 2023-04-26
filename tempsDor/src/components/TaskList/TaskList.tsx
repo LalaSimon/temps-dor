@@ -8,6 +8,10 @@ import {
     Draggable,
     DropResult,
 } from "react-beautiful-dnd";
+import { app } from "../../firebase";
+import { db } from "../../firebase";
+import { getFirestore } from "firebase/firestore";
+import { addDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 
 const TaskList = () => {
     const dispatch = useAppDispatch();

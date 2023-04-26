@@ -2,9 +2,8 @@ import { FormEvent } from "react";
 import { useState } from "react";
 import { deleteList, newTask } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
-import { auth, app } from "../../firebase";
-import { getFirestore } from "firebase/firestore";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
+import { addDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();
@@ -21,8 +20,6 @@ export const AddTask = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const db = getFirestore(app);
-
         dispatch(
             newTask({
                 topic: topic,
@@ -44,19 +41,25 @@ export const AddTask = () => {
         resetForm();
     };
 
-    const handleReset = () => {
+    const handleReset = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, "tasks"));
+            querySnapshot.forEach((doc) => {
+                deleteDoc(doc.ref);
+            });
+        } catch (e) {
+            console.error("Error deleting list of tasks: ", e);
+        }
+
         resetForm();
         dispatch(deleteList());
     };
 
     const renderClick = async () => {
-        const db = getFirestore(app);
         const querySnapshot = await getDocs(collection(db, "tasks"));
-        console.log(querySnapshot.docs[0].data().topic);
         querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${JSON.stringify(doc.data().topic)}`);
-            console.log(`${doc.id} => ${JSON.stringify(doc.data().deadline)}`);
-            console.log(`${doc.id} => ${JSON.stringify(doc.data().priority)}`);
+            console.log(querySnapshot.size);
+            console.log(`${doc.data().topic}`);
         });
     };
 
