@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+    createSlice,
+    PayloadAction,
+    createAsyncThunk,
+    Action,
+} from "@reduxjs/toolkit";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAppDispatch } from "../store";
@@ -44,10 +49,11 @@ const taskListSlice = createSlice({
                 topic: string;
                 deadline: string;
                 priority: string;
+                id: number;
             }>
         ) => {
             state.list.push({
-                id: new Date().getTime(),
+                id: action.payload.id,
                 topic: action.payload.topic,
                 deadline: action.payload.deadline,
                 priority: action.payload.priority,
@@ -71,7 +77,10 @@ const taskListSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchList.fulfilled, (state, action) => {
-            state.list.push(action.payload);
+            action.payload.sort((a: Todo, b: Todo) => {
+                return a.id - b.id;
+            });
+            state.list.push(...action.payload);
         });
     },
 });

@@ -25,6 +25,7 @@ export const AddTask = () => {
                 topic: topic,
                 deadline: deadlineTime,
                 priority: priority,
+                id: new Date().getTime(),
             })
         );
         try {
@@ -32,6 +33,7 @@ export const AddTask = () => {
                 topic: topic,
                 deadline: deadlineTime,
                 priority: priority,
+                id: new Date().getTime(),
             });
 
             console.log("Document written with ID: ", docRef.id);

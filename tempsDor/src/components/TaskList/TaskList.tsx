@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { moveTask, removeTask } from "../../store/features/tasksSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
@@ -12,11 +12,15 @@ import { fetchList } from "../../store/features/tasksSlice";
 
 const TaskList = () => {
     const dispatch = useAppDispatch();
+    const isFirstRender = useRef(true);
     useEffect(() => {
-        dispatch(fetchList());
+        if (isFirstRender.current) {
+            // Wykonaj logikę tylko przy pierwszym renderowaniu
+            dispatch(fetchList());
+            isFirstRender.current = false;
+        }
     }, []);
     const list = useAppSelector((state) => state.tasks.list);
-    console.log(list);
 
     const handleSubmit = (id: number): void => {
         dispatch(removeTask(id));
@@ -54,7 +58,7 @@ const TaskList = () => {
                             >
                                 {list.map((task: Todo, taskIndex: number) => (
                                     <Draggable
-                                        key={task.id}
+                                        key={taskIndex}
                                         draggableId={`task-${task.id}`}
                                         index={taskIndex}
                                     >
