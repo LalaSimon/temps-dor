@@ -57,9 +57,9 @@ export const AddTask = () => {
 
     const renderClick = async () => {
         const querySnapshot = await getDocs(collection(db, "tasks"));
+
         querySnapshot.forEach((doc) => {
-            console.log(querySnapshot.size);
-            console.log(`${doc.data().topic}`);
+            console.log(doc.data());
         });
     };
 

@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { moveTask, removeTask } from "../../store/features/tasksSlice";
-import { useAppDispatch } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
 import {
     DragDropContext,
@@ -8,14 +8,15 @@ import {
     Draggable,
     DropResult,
 } from "react-beautiful-dnd";
-import { app } from "../../firebase";
-import { db } from "../../firebase";
-import { getFirestore } from "firebase/firestore";
-import { addDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import { fetchList } from "../../store/features/tasksSlice";
 
 const TaskList = () => {
     const dispatch = useAppDispatch();
-    const list = useSelector((state: any) => state.newTask.list);
+    useEffect(() => {
+        dispatch(fetchList());
+    }, []);
+    const list = useAppSelector((state) => state.tasks.list);
+    console.log(list);
 
     const handleSubmit = (id: number): void => {
         dispatch(removeTask(id));

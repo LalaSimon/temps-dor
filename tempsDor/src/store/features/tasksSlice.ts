@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useAppDispatch } from "../store";
 
-interface MoveTaskPayload {
+export interface MoveTaskPayload {
     fromIndex: number;
     toIndex: number;
 }
@@ -15,13 +16,21 @@ export interface Todo {
     completed: boolean;
 }
 
-const querySnapshot = await getDocs(collection(db, "tasks"));
+export const fetchList = createAsyncThunk("list/fetchList", async () => {
+    const response = await getDocs(collection(db, "tasks"));
+    const fetchedState: any = [];
+    response.forEach((docs) => {
+        fetchedState.push(docs.data());
+    });
+    console.log(fetchedState);
+    return fetchedState;
+});
 
 export interface TaskListState {
     list: Todo[];
 }
 
-const initialState: TaskListState = {
+export const initialState: TaskListState = {
     list: [],
 };
 
@@ -60,11 +69,13 @@ const taskListSlice = createSlice({
             return { ...state, list: items };
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(fetchList.fulfilled, (state, action) => {
+            state.list.push(action.payload);
+        });
+    },
 });
 
-export const { newTask } = taskListSlice.actions;
-export const { removeTask } = taskListSlice.actions;
-export const { deleteList } = taskListSlice.actions;
-export const { moveTask } = taskListSlice.actions;
-
+export const { newTask, removeTask, deleteList, moveTask } =
+    taskListSlice.actions;
 export default taskListSlice.reducer;
