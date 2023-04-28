@@ -9,6 +9,7 @@ import {
     DropResult,
 } from "react-beautiful-dnd";
 import { fetchList } from "../../store/features/tasksSlice";
+import { Priority } from "../Priority/Priority";
 
 const TaskList = () => {
     const dispatch = useAppDispatch();
@@ -93,36 +94,15 @@ const TaskList = () => {
                                                 </p>
                                                 <p className="text-xs text-gray-400">
                                                     <strong>Priority: </strong>
-                                                    {(() => {
-                                                        switch (task.priority) {
-                                                            case "High":
-                                                                return (
-                                                                    <span className="text-red-600 font-bold">
-                                                                        {
-                                                                            task.priority
-                                                                        }
-                                                                    </span>
-                                                                );
-                                                            case "Medium":
-                                                                return (
-                                                                    <span className="text-yellow-500 font-bold">
-                                                                        {
-                                                                            task.priority
-                                                                        }
-                                                                    </span>
-                                                                );
-                                                            case "Low":
-                                                                return (
-                                                                    <span className="text-green-600 font-bold">
-                                                                        {
-                                                                            task.priority
-                                                                        }
-                                                                    </span>
-                                                                );
-                                                            default:
-                                                                return null;
+                                                    <Priority
+                                                        topic={task.topic}
+                                                        deadline={task.deadline}
+                                                        priority={task.priority}
+                                                        id={task.id}
+                                                        completed={
+                                                            task.completed
                                                         }
-                                                    })()}
+                                                    ></Priority>
                                                 </p>
                                             </div>
                                         )}

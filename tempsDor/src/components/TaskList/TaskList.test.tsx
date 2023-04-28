@@ -8,13 +8,13 @@ describe("TaskList", () => {
     test("renders task list", () => {
         const task1 = {
             id: 1,
-            title: "Task 1",
+            topic: "Task 1",
             priority: "High",
             deadline: "2023-04-30",
         };
         const task2 = {
             id: 2,
-            title: "Task 2",
+            topic: "Task 2",
             priority: "Medium",
             deadline: "2023-05-10",
         };

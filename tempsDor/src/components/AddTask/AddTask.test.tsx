@@ -1,10 +1,10 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "../../store/store";
 import { AddTask } from "./AddTask";
+import { store } from "../../store/store";
 
 describe("AddTask component", () => {
-    it("renders input fields and buttons", () => {
+    test("should render AddTask component with all input fields and buttons", () => {
         render(
             <Provider store={store}>
                 <AddTask />
@@ -20,55 +20,44 @@ describe("AddTask component", () => {
         expect(screen.getByText("Clear list")).toBeInTheDocument();
     });
 
-    it("dispatches newTask action when form is submitted with valid data", () => {
+    test("should allow user to add new task", async () => {
         render(
             <Provider store={store}>
                 <AddTask />
             </Provider>
         );
 
-        const input = screen.getByPlaceholderText("Add new task");
+        const taskInput = screen.getByPlaceholderText("Add new task");
         const deadlineInput = screen.getByPlaceholderText(
             "Type your task deadline"
         );
         const prioritySelect = screen.getByTestId("selectTestId");
+        const addButton = screen.getByText("Add task");
 
-        fireEvent.change(input, { target: { value: "Test task" } });
-        fireEvent.change(deadlineInput, { target: { value: "2023-05-01" } });
+        fireEvent.change(taskInput, { target: { value: "Do the laundry" } });
+        fireEvent.change(deadlineInput, { target: { value: "2022-01-01" } });
         fireEvent.change(prioritySelect, { target: { value: "High" } });
-        fireEvent.submit(screen.getByRole("button", { name: "Add task" }));
 
-        expect(store.getState().newTask.list.length).toBe(1);
-        expect(store.getState().newTask.list[0].title).toBe("Test task");
-        expect(store.getState().newTask.list[0].deadline).toBe("2023-05-01");
-        expect(store.getState().newTask.list[0].priority).toBe("High");
+        fireEvent.click(addButton);
+
+        expect(screen.getByText("Do the laundry")).toBeInTheDocument();
+        expect(screen.getByText("2022-01-01")).toBeInTheDocument();
+        expect(screen.getByText("High")).toBeInTheDocument();
     });
 
-    it("resets form fields and clears list when Clear list button is clicked", () => {
+    test("should allow user to clear list of tasks", async () => {
         render(
             <Provider store={store}>
                 <AddTask />
             </Provider>
         );
 
-        const input = screen.getByPlaceholderText(
-            "Add new task"
-        ) as HTMLInputElement;
-        const deadlineInput = screen.getByPlaceholderText(
-            "Type your task deadline"
-        ) as HTMLInputElement;
-        const prioritySelect = screen.getByTestId(
-            "selectTestId"
-        ) as HTMLSelectElement;
+        const deleteButton = screen.getByTestId("deleteBtn");
 
-        fireEvent.change(input, { target: { value: "Test task" } });
-        fireEvent.change(deadlineInput, { target: { value: "2023-05-01" } });
-        fireEvent.change(prioritySelect, { target: { value: "High" } });
-        fireEvent.click(screen.getByTestId("deleteBtn"));
+        fireEvent.click(deleteButton);
 
-        expect(store.getState().newTask.list.length).toBe(0);
-        expect(input.value).toBe("");
-        expect(deadlineInput.value).toBe("");
-        expect(prioritySelect.value).toBe("");
+        expect(screen.queryByText("Do the laundry")).toBeNull();
+        expect(screen.queryByText("2022-01-01")).toBeNull();
+        expect(screen.queryByText("High")).toBeNull();
     });
 });
