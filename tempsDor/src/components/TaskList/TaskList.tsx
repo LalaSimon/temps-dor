@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useRef, useEffect } from "react";
 import { moveTask, removeTask } from "../../store/features/tasksSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
