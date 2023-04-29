@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export interface MoveTaskPayload {
@@ -14,6 +14,15 @@ export interface Todo {
     priority: string;
     completed: boolean;
 }
+
+export interface TaskListState {
+    list: Todo[];
+}
+
+export const initialState: TaskListState = {
+    list: [],
+};
+
 export const fetchList = createAsyncThunk("list/fetchList", async () => {
     const response = await getDocs(collection(db, "tasks"));
     const todos: Todo[] = response.docs.map((doc) => {
@@ -29,13 +38,14 @@ export const fetchList = createAsyncThunk("list/fetchList", async () => {
     return todos.sort((a, b) => a.id - b.id);
 });
 
-export interface TaskListState {
-    list: Todo[];
-}
-
-export const initialState: TaskListState = {
-    list: [],
-};
+export const addTaskThunk = createAsyncThunk(
+    "list/addTask",
+    async (task: Todo) => {
+        const createTask = await addDoc(collection(db, "tasks"), task);
+        const addTask = await getDoc(createTask);
+        return addTask.data() as Todo;
+    }
+);
 
 const taskListSlice = createSlice({
     name: "list",
@@ -80,6 +90,10 @@ const taskListSlice = createSlice({
                 state.list = action.payload;
             }
         );
+        builder.addCase(addTaskThunk.fulfilled, (state, action) => {
+            const task = action.payload;
+            state.list.push(task);
+        });
     },
 });
 
