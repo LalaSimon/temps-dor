@@ -51,23 +51,6 @@ const taskListSlice = createSlice({
     name: "list",
     initialState,
     reducers: {
-        newTask: (
-            state,
-            action: PayloadAction<{
-                topic: string;
-                deadline: string;
-                priority: string;
-                id: number;
-            }>
-        ) => {
-            state.list.push({
-                id: action.payload.id,
-                topic: action.payload.topic,
-                deadline: action.payload.deadline,
-                priority: action.payload.priority,
-                completed: false,
-            });
-        },
         removeTask: (state, action: PayloadAction<number>) => {
             const idToRemove = action.payload;
             state.list = state.list.filter((task) => task.id !== idToRemove);
@@ -97,6 +80,5 @@ const taskListSlice = createSlice({
     },
 });
 
-export const { newTask, removeTask, deleteList, moveTask } =
-    taskListSlice.actions;
+export const { removeTask, deleteList, moveTask } = taskListSlice.actions;
 export default taskListSlice.reducer;
