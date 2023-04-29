@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export interface MoveTaskPayload {
@@ -14,6 +14,15 @@ export interface Todo {
     priority: string;
     completed: boolean;
 }
+
+export interface TaskListState {
+    list: Todo[];
+}
+
+export const initialState: TaskListState = {
+    list: [],
+};
+
 export const fetchList = createAsyncThunk("list/fetchList", async () => {
     const response = await getDocs(collection(db, "tasks"));
     const todos: Todo[] = response.docs.map((doc) => {
@@ -29,35 +38,19 @@ export const fetchList = createAsyncThunk("list/fetchList", async () => {
     return todos.sort((a, b) => a.id - b.id);
 });
 
-export interface TaskListState {
-    list: Todo[];
-}
-
-export const initialState: TaskListState = {
-    list: [],
-};
+export const addTaskThunk = createAsyncThunk(
+    "list/addTask",
+    async (task: Todo) => {
+        const createTask = await addDoc(collection(db, "tasks"), task);
+        const addTask = await getDoc(createTask);
+        return addTask.data() as Todo;
+    }
+);
 
 const taskListSlice = createSlice({
     name: "list",
     initialState,
     reducers: {
-        newTask: (
-            state,
-            action: PayloadAction<{
-                topic: string;
-                deadline: string;
-                priority: string;
-                id: number;
-            }>
-        ) => {
-            state.list.push({
-                id: action.payload.id,
-                topic: action.payload.topic,
-                deadline: action.payload.deadline,
-                priority: action.payload.priority,
-                completed: false,
-            });
-        },
         removeTask: (state, action: PayloadAction<number>) => {
             const idToRemove = action.payload;
             state.list = state.list.filter((task) => task.id !== idToRemove);
@@ -80,9 +73,12 @@ const taskListSlice = createSlice({
                 state.list = action.payload;
             }
         );
+        builder.addCase(addTaskThunk.fulfilled, (state, action) => {
+            const task = action.payload;
+            state.list.push(task);
+        });
     },
 });
 
-export const { newTask, removeTask, deleteList, moveTask } =
-    taskListSlice.actions;
+export const { removeTask, deleteList, moveTask } = taskListSlice.actions;
 export default taskListSlice.reducer;

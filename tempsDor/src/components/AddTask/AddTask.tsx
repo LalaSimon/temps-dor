@@ -1,9 +1,10 @@
 import { FormEvent } from "react";
 import { useState } from "react";
-import { deleteList, newTask } from "../../store/features/tasksSlice";
+import { deleteList } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
 import { db } from "../../firebase";
-import { addDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc } from "firebase/firestore";
+import { addTaskThunk } from "../../store/features/tasksSlice";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();
@@ -21,25 +22,14 @@ export const AddTask = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(
-            newTask({
+            addTaskThunk({
                 topic: topic,
                 deadline: deadlineTime,
                 priority: priority,
                 id: new Date().getTime(),
+                completed: false,
             })
         );
-        try {
-            const docRef = await addDoc(collection(db, "tasks"), {
-                topic: topic,
-                deadline: deadlineTime,
-                priority: priority,
-                id: new Date().getTime(),
-            });
-
-            console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
         resetForm();
     };
 
