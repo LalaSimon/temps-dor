@@ -60,10 +60,7 @@ export const deleteTaskThunk = createAsyncThunk(
         const taskToDelete = responseToShow.docs.filter(
             (e) => Number(e.data().id) == Number(task.id)
         );
-        /// ZNAJDZ SPOSÓB NA ZNALEZIENIE ID DOKUMENTU Z KOLEKCJI
-        console.log(taskToDelete[0].id);
-        const idToDB = taskToDelete[0].id;
-        await deleteDoc(doc(db, "tasks", idToDB));
+        await deleteDoc(doc(db, "tasks", taskToDelete[0].id));
         return taskToDelete[0].data().id;
     }
 );
