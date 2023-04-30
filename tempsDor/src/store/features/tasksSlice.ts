@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 export interface MoveTaskPayload {
@@ -46,6 +53,20 @@ export const addTaskThunk = createAsyncThunk(
         return addTask.data() as Todo;
     }
 );
+export const deleteTaskThunk = createAsyncThunk(
+    "list/deleteTask",
+    async (task: Todo) => {
+        const responseToShow = await getDocs(collection(db, "tasks"));
+        const taskToDelete = responseToShow.docs.filter(
+            (e) => Number(e.data().id) == Number(task.id)
+        );
+
+        console.log(task.id);
+        const idToDB = responseToShow.docs[0].id;
+        await deleteDoc(doc(db, "tasks", idToDB));
+        return taskToDelete[0].data().id;
+    }
+);
 
 const taskListSlice = createSlice({
     name: "list",
@@ -76,6 +97,10 @@ const taskListSlice = createSlice({
         builder.addCase(addTaskThunk.fulfilled, (state, action) => {
             const task = action.payload;
             state.list.push(task);
+        });
+        builder.addCase(deleteTaskThunk.fulfilled, (state, action) => {
+            const deletedTask = action.payload;
+            state.list = state.list.filter((task) => task.id !== deletedTask);
         });
     },
 });

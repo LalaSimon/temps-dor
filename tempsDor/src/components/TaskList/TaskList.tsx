@@ -1,5 +1,9 @@
 import { useRef, useEffect } from "react";
-import { moveTask, removeTask } from "../../store/features/tasksSlice";
+import {
+    deleteTaskThunk,
+    moveTask,
+    removeTask,
+} from "../../store/features/tasksSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
 import {
@@ -23,8 +27,9 @@ const TaskList = () => {
     }, []);
     const list = useAppSelector((state) => state.tasks.list);
 
-    const handleSubmit = (id: number): void => {
-        dispatch(removeTask(id));
+    const handleDelete = (task: Todo): void => {
+        dispatch(deleteTaskThunk(task));
+        console.log(task.id);
     };
 
     const handleDragEnd = (result: DropResult) => {
@@ -78,9 +83,7 @@ const TaskList = () => {
 
                                                     <button
                                                         onClick={() =>
-                                                            handleSubmit(
-                                                                task.id
-                                                            )
+                                                            handleDelete(task)
                                                         }
                                                         className="border-2 border-red-600 p-1 rounded self-center"
                                                     >
