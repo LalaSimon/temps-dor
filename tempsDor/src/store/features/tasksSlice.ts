@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
     addDoc,
     collection,
@@ -60,9 +60,9 @@ export const deleteTaskThunk = createAsyncThunk(
         const taskToDelete = responseToShow.docs.filter(
             (e) => Number(e.data().id) == Number(task.id)
         );
-
-        console.log(task.id);
-        const idToDB = responseToShow.docs[0].id;
+        /// ZNAJDZ SPOSÓB NA ZNALEZIENIE ID DOKUMENTU Z KOLEKCJI
+        console.log(taskToDelete[0].id);
+        const idToDB = taskToDelete[0].id;
         await deleteDoc(doc(db, "tasks", idToDB));
         return taskToDelete[0].data().id;
     }
