@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../store/store";
 import { db } from "../../firebase";
 import { collection, getDocs, deleteDoc } from "firebase/firestore";
 import { addTaskThunk } from "../../store/features/tasksSlice";
+import { deleteWholeList } from "../../store/features/tasksSlice";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();
@@ -34,25 +35,8 @@ export const AddTask = () => {
     };
 
     const handleReset = async () => {
-        try {
-            const querySnapshot = await getDocs(collection(db, "tasks"));
-            querySnapshot.forEach((doc) => {
-                deleteDoc(doc.ref);
-            });
-        } catch (e) {
-            console.error("Error deleting list of tasks: ", e);
-        }
-
         resetForm();
-        dispatch(deleteList());
-    };
-
-    const renderClick = async () => {
-        const querySnapshot = await getDocs(collection(db, "tasks"));
-
-        querySnapshot.forEach((doc) => {
-            console.log(doc.data());
-        });
+        dispatch(deleteWholeList());
     };
 
     return (
@@ -95,9 +79,6 @@ export const AddTask = () => {
                 </select>
                 <div className="flex gap-2">
                     <button
-                        onClick={() => {
-                            renderClick();
-                        }}
                         type="submit"
                         className="border-2 rounded-xl w-36 p-2 text-center"
                     >

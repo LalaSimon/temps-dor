@@ -65,14 +65,20 @@ export const deleteTaskThunk = createAsyncThunk(
     }
 );
 
+export const deleteWholeList = createAsyncThunk(
+    "list/deleteWholeList",
+    async () => {
+        const querySnapshot = await getDocs(collection(db, "tasks"));
+        querySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+        });
+    }
+);
+
 const taskListSlice = createSlice({
     name: "list",
     initialState,
     reducers: {
-        removeTask: (state, action: PayloadAction<number>) => {
-            const idToRemove = action.payload;
-            state.list = state.list.filter((task) => task.id !== idToRemove);
-        },
         deleteList: (state) => {
             state.list = [];
         },
@@ -99,8 +105,11 @@ const taskListSlice = createSlice({
             const deletedTask = action.payload;
             state.list = state.list.filter((task) => task.id !== deletedTask);
         });
+        builder.addCase(deleteWholeList.fulfilled, (state) => {
+            state.list = [];
+        });
     },
 });
 
-export const { removeTask, deleteList, moveTask } = taskListSlice.actions;
+export const { deleteList, moveTask } = taskListSlice.actions;
 export default taskListSlice.reducer;

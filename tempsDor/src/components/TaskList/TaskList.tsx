@@ -1,9 +1,5 @@
 import { useRef, useEffect } from "react";
-import {
-    deleteTaskThunk,
-    moveTask,
-    removeTask,
-} from "../../store/features/tasksSlice";
+import { deleteTaskThunk, moveTask } from "../../store/features/tasksSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Todo } from "../../store/features/tasksSlice";
 import {
@@ -29,7 +25,6 @@ const TaskList = () => {
 
     const handleDelete = (task: Todo): void => {
         dispatch(deleteTaskThunk(task));
-        console.log(task.id);
     };
 
     const handleDragEnd = (result: DropResult) => {
