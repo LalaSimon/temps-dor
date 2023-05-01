@@ -1,9 +1,6 @@
 import { FormEvent } from "react";
 import { useState } from "react";
-import { deleteList } from "../../store/features/tasksSlice";
 import { useAppDispatch } from "../../store/store";
-import { db } from "../../firebase";
-import { collection, getDocs, deleteDoc } from "firebase/firestore";
 import { addTaskThunk } from "../../store/features/tasksSlice";
 import { deleteWholeList } from "../../store/features/tasksSlice";
 
