@@ -12,6 +12,8 @@ import { db } from "../../firebase";
 export interface MoveTaskPayload {
     fromIndex: number;
     toIndex: number;
+    fromID: number;
+    toID: number;
 }
 
 export interface Todo {
@@ -75,18 +77,24 @@ export const deleteWholeList = createAsyncThunk(
     }
 );
 
+export const noveAllTasks = createAsyncThunk("list/moveTask", async () => {});
+
 const taskListSlice = createSlice({
     name: "list",
     initialState,
     reducers: {
-        deleteList: (state) => {
-            state.list = [];
-        },
         moveTask: (state, action: PayloadAction<MoveTaskPayload>) => {
-            const { fromIndex, toIndex } = action.payload;
+            const { fromIndex, toIndex, fromID, toID } = action.payload;
+            console.log(fromIndex);
             const items = Array.from(state.list);
             const [reorderedItem] = items.splice(fromIndex, 1);
             items.splice(toIndex, 0, reorderedItem);
+            items.forEach((e) => {
+                e.id == fromID ? (e.id = toID) : null;
+            });
+            items.forEach((e) => {
+                e.id == toID ? (e.id = fromID) : null;
+            });
             return { ...state, list: items };
         },
     },
@@ -111,5 +119,5 @@ const taskListSlice = createSlice({
     },
 });
 
-export const { deleteList, moveTask } = taskListSlice.actions;
+export const { moveTask } = taskListSlice.actions;
 export default taskListSlice.reducer;

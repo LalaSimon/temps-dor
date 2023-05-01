@@ -31,10 +31,13 @@ const TaskList = () => {
         if (!result.destination) {
             return;
         }
+        console.log(result);
         dispatch(
             moveTask({
-                fromIndex: result.source.index,
-                toIndex: result.destination.index,
+                fromIndex: Number(result.source.index),
+                toIndex: Number(result.destination.index),
+                fromID: Number(result.source.droppableId),
+                toID: Number(result.destination.droppableId),
             })
         );
     };
@@ -60,7 +63,7 @@ const TaskList = () => {
                                 {list.map((task: Todo, taskIndex: number) => (
                                     <Draggable
                                         key={taskIndex}
-                                        draggableId={`task-${task.id}`}
+                                        draggableId={task.id.toString()}
                                         index={taskIndex}
                                     >
                                         {(provided) => (
