@@ -19,8 +19,8 @@ const Nav = () => {
     return (
         <>
             <nav>
-                <div className="text-white text-xl uppercase">
-                    <Link to="/">temps d'or</Link>
+                <div className="text-white text-2xl logo">
+                    <Link to="/">Temps d'or</Link>
                 </div>
                 <div className="burger-menu" onClick={updateMenu}>
                     <div className={burger_class}></div>
