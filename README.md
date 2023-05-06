@@ -11,7 +11,7 @@ This application is designed to help users manage their time more effectively by
 
 ## Tech Stack
 
-**Client:** React, Redux, TailwindCSS, TypeScript
+**Client:** React, Typescript, Redux, TailwindCSS, 
 
 **Server:** Firebase
 
