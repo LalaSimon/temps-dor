@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAppDispatch } from "../../store/store";
 import { addTaskThunk } from "../../store/features/tasksSlice";
 import { deleteWholeList } from "../../store/features/tasksSlice";
+import { getAuth } from "firebase/auth";
 
 export const AddTask = () => {
     const dispatch = useAppDispatch();

@@ -10,11 +10,13 @@ export const SignIn = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 console.log(userCredential);
+                console.log(userCredential.user.uid);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
+
     return (
         <div className="flex flex-col justify-center items-center gap-2">
             <h1>Sign in</h1>
