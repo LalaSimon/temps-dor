@@ -8,6 +8,7 @@ import {
     getDocs,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { getAuth } from "firebase/auth";
 
 export interface MoveTaskPayload {
     fromIndex: number;
@@ -32,8 +33,13 @@ export const initialState: TaskListState = {
     list: [],
 };
 
+const getUserID = (): string | undefined | null => {
+    return getAuth().currentUser?.email;
+};
 export const fetchList = createAsyncThunk("list/fetchList", async () => {
-    const response = await getDocs(collection(db, "tasks"));
+    const getUserEmail: string | undefined | null =
+        getAuth().currentUser?.email;
+    const response = await getDocs(collection(db, getUserEmail!));
     const todos: Todo[] = response.docs.map((doc) => {
         const data = doc.data();
         return {
@@ -50,7 +56,8 @@ export const fetchList = createAsyncThunk("list/fetchList", async () => {
 export const addTaskThunk = createAsyncThunk(
     "list/addTask",
     async (task: Todo) => {
-        const createTask = await addDoc(collection(db, "tasks"), task);
+        console.log(getUserID());
+        const createTask = await addDoc(collection(db, getUserID()!), task);
         const addTask = await getDoc(createTask);
         return addTask.data() as Todo;
     }
@@ -58,11 +65,12 @@ export const addTaskThunk = createAsyncThunk(
 export const deleteTaskThunk = createAsyncThunk(
     "list/deleteTask",
     async (task: Todo) => {
-        const responseToShow = await getDocs(collection(db, "tasks"));
+        const responseToShow = await getDocs(collection(db, getUserID()!));
+        console.log(getUserID());
         const taskToDelete = responseToShow.docs.filter(
             (e) => Number(e.data().id) == Number(task.id)
         );
-        await deleteDoc(doc(db, "tasks", taskToDelete[0].id));
+        await deleteDoc(doc(db, getUserID()!, taskToDelete[0].id));
         return taskToDelete[0].data().id;
     }
 );
@@ -70,7 +78,7 @@ export const deleteTaskThunk = createAsyncThunk(
 export const deleteWholeList = createAsyncThunk(
     "list/deleteWholeList",
     async () => {
-        const querySnapshot = await getDocs(collection(db, "tasks"));
+        const querySnapshot = await getDocs(collection(db, getUserID()!));
         querySnapshot.forEach((doc) => {
             deleteDoc(doc.ref);
         });
@@ -107,6 +115,7 @@ const taskListSlice = createSlice({
         );
         builder.addCase(addTaskThunk.fulfilled, (state, action) => {
             const task = action.payload;
+            console.log(action);
             state.list.push(task);
         });
         builder.addCase(deleteTaskThunk.fulfilled, (state, action) => {
